@@ -352,4 +352,3 @@ MigrationBackup/
 #Add additional VS files
 *.sln
 *.vcxproj
-*.vcxproj.filters 
