@@ -178,6 +178,18 @@ public:
 
 	}
 
+	Parking& operator=(Parking& p) {
+
+		this->TicketID = p.TicketID;
+		this->areas = p.areas;
+		this->spotsPerArea = new int[this->areas];
+		if (this->spotsPerArea) { delete[]this->spotsPerArea; }
+		for (int i = 0; i < this->areas; i++) {
+			this->spotsPerArea[i] = p.spotsPerArea[i];
+		}
+
+	}
+
 	int* getSpotPerArea() {
 
 		return this->spotsPerArea;
@@ -215,6 +227,15 @@ public:
 
 	}
 
+	~Parking() {
+
+		if (this->spotsPerArea)
+		{ 
+			delete[]this->spotsPerArea; 
+		}
+
+	}
+
 
 	friend ostream& operator<<(ostream& out, Parking& p) {
 		out << "\n -The Ticket ID number is:" << p.TicketID << "\n number of areas: " << p.areas;
@@ -242,9 +263,131 @@ public:
 		return this->spotsPerArea[pos];
 	}
 
+	bool CanTheyEnterTheParking(int nr) {
+		if (this->TicketID > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 };
 float Parking::maxEntrances = 20000;
+
+
+class Team {
+private:
+
+	char* KitColor;
+	const int noOfStartingPlayers;
+	int noOfTrophies;
+public:
+
+	Team():noOfStartingPlayers(11) {
+		
+		this->KitColor = new char[strlen("Blue") + 1];
+		strcpy(this->KitColor, "Blue");
+		this->noOfTrophies = 3;
+		
+	}
+
+	Team(const char* KitColor, int noOfTrophies,int noOfStartingPlayers):noOfStartingPlayers(noOfStartingPlayers) {
+
+		this->KitColor = new char[strlen(KitColor) + 1];
+		strcpy(this->KitColor, KitColor);
+		this->noOfTrophies = noOfTrophies;
+
+	}
+
+	Team(const Team& t) :noOfStartingPlayers(t.noOfStartingPlayers) {
+		this->noOfTrophies = t.noOfTrophies;
+		this->KitColor = new char[strlen(t.KitColor) + 1];
+		strcpy(this->KitColor, t.KitColor);
+
+	}
+
+	Team& operator=(Team& t) {
+
+		this->noOfTrophies = t.noOfTrophies;
+		if (this->KitColor) { delete[]this->KitColor; }
+		this->KitColor = new char[strlen(t.KitColor) + 1];
+		strcpy(this->KitColor, t.KitColor);
+
+		return*this;
+
+	}
+	~Team() {
+
+		if (this->KitColor) {
+
+			delete[]this->KitColor;
+		}
+
+	}
+	
+
+	char* getKitColor() {
+
+		return this->KitColor;
+	}
+
+	void setKitColor(const char* newKitColor) {
+
+		if (strlen(newKitColor) > 1) {
+
+			if (this->KitColor) {
+				delete[]this->KitColor;
+			}
+
+			this->KitColor = new char[strlen(newKitColor) + 1];
+			strcpy(this->KitColor, newKitColor);
+		}
+
+
+	}
+
+	int GetNoOfTrophies() {
+
+		return this->noOfTrophies;
+
+
+	}
+
+	void setNumberOfTrophis(int newNoOfTrophies) {
+
+		this->noOfTrophies = newNoOfTrophies;
+
+	}
+
+	int GetNoOfStartingPlayers() {
+
+		return this->noOfStartingPlayers;
+
+
+	}
+
+
+	friend ostream& operator<<(ostream& out, Team& t) {
+		out << "\n -The Kit color is::" << t.KitColor << "\n -NUmber of trophies: " << t.noOfTrophies  ;
+
+		return out;
+	}
+	friend istream& operator>>(istream& in, Team& t) {
+
+		char buffer[25];
+		cout << " Kit color: ";
+		in >> buffer;
+		if (t.KitColor) { delete[]t.KitColor; }
+		t.KitColor = new char[strlen(buffer) + 1];
+		strcpy(t.KitColor, buffer);
+		cout << "No. of trophies";
+		in >> t.noOfTrophies;
+		return in;
+	}
+
+
+};
 
 
 
@@ -281,4 +424,11 @@ void main() {
 	Parking p3 = p2;
 	cout << "\n-------" << p2 << "\n------" << p3;
 
+	if (p3.CanTheyEnterTheParking(2)) {
+		cout << "\nThey can";
+	}
+	else {
+		cout << "\nThey can't";
+
+	}
 }
