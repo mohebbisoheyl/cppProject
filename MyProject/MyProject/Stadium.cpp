@@ -284,15 +284,15 @@ private:
 	int noOfTrophies;
 public:
 
-	Team():noOfStartingPlayers(11) {
-		
+	Team() :noOfStartingPlayers(11) {
+
 		this->KitColor = new char[strlen("Blue") + 1];
 		strcpy(this->KitColor, "Blue");
 		this->noOfTrophies = 3;
-		
+
 	}
 
-	Team(const char* KitColor, int noOfTrophies,int noOfStartingPlayers):noOfStartingPlayers(noOfStartingPlayers) {
+	Team(const char* KitColor, int noOfTrophies, int noOfStartingPlayers) :noOfStartingPlayers(noOfStartingPlayers) {
 
 		this->KitColor = new char[strlen(KitColor) + 1];
 		strcpy(this->KitColor, KitColor);
@@ -325,7 +325,7 @@ public:
 		}
 
 	}
-	
+
 
 	char* getKitColor() {
 
@@ -369,7 +369,7 @@ public:
 
 
 	friend ostream& operator<<(ostream& out, Team& t) {
-		out << "\n -The Kit color is::" << t.KitColor << "\n -NUmber of trophies: " << t.noOfTrophies  ;
+		out << "\n -The Kit color is::" << t.KitColor << "\n -NUmber of trophies: " << t.noOfTrophies;
 
 		return out;
 	}
@@ -386,8 +386,28 @@ public:
 		return in;
 	}
 
+	Team& operator-(int x) {
 
-};
+		this->noOfTrophies -= x;
+		return*this;
+	}
+
+
+	Team& operator++() {
+
+
+		noOfTrophies++;
+		return *this;
+
+	}
+	Team& operator++(int) {
+
+		Team t;
+		noOfTrophies++;
+		return t;
+
+	}
+	};
 
 
 
@@ -431,4 +451,24 @@ void main() {
 		cout << "\nThey can't";
 
 	}
+
+	Team t1;
+	Team t2("Red", 3, 11);
+	Team t3 = t2;
+	t3 = t1;
+	cout << "\n-------------------------------Second Class-----------------------------------";
+	cout << t2.getKitColor(); t2.setKitColor("Purple");
+	cout << t2.GetNoOfTrophies(); t2.setNumberOfTrophis(16);
+	cout << t2.GetNoOfStartingPlayers();
+	cout <<endl << t2;
+	t2 = t3 - 100;
+	cout << endl<< t2;
+	++t3;
+	cout << endl << t3;
+	t3++;
+	cout << t3;
+
+
+
+	
 }
